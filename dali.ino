@@ -4,13 +4,31 @@ const int TE_HIGH = 823 - TE_LOW;
 const int DALI_TX = 2;
 const int DALI_RX = 3;
 
+const int ADDR = 254>>1;
+
+#define PROGRAM 0
+
 void setup() { 
   pinMode(DALI_TX, OUTPUT);
   pinMode(DALI_RX, INPUT);
   
   digitalWrite(DALI_TX, LOW);
   
-  sendCommand(254, 100);
+#if PROGRAM
+  sendCommand(0xFF, 32); // Broadcast, reset
+  sendCommand(0xFF, 32);
+  sendCommand(0b10100101, 0); // Special command 258, initialise
+  sendCommand(0b10100101, 0);
+  sendCommand(0b10110111, ADDR << 1 | 1); // Special command 267, program short address
+#endif
+
+  // Flash the light
+  int i = 0;
+  for (;;) {
+    sendCommand(ADDR << 1, (i*253) + 1);
+    i = !i;
+    delay(1000);
+  }
 }
 
 uint8_t brightness = 1;
