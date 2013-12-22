@@ -4,7 +4,8 @@ import serial
 import sys
 import time
 
-ser = serial.Serial('/dev/tty.usbmodem1411', baudrate=115200, timeout=1)
+device = sys.argv[1]
+ser = serial.Serial(device, baudrate=115200, timeout=1)
 
 units = [0, 1, 2]
 
@@ -32,8 +33,16 @@ def chase(t=0.25):
             msg([a << 1, 254, b << 1, 1])
             time.sleep(t)
 
+def flash(t=0.5):
+    while True:
+        msg([254, 254])
+        time.sleep(t)
+        msg([254, 1])
+        time.sleep(t)
+
 try:
-    chase()
+    chase(0.1)
+    #flash()
 except KeyboardInterrupt:
     for unit in units:
         msg([unit << 1, 254])
