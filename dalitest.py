@@ -7,7 +7,7 @@ import time
 device = sys.argv[1]
 ser = serial.Serial(device, baudrate=115200, timeout=1)
 
-units = [0, 1, 2]
+units = [0, 1, 2, 5, 8, 7, 4]
 
 def msg(data):
     # packet starts with the number of message bytes
@@ -41,7 +41,7 @@ def flash(t=0.5):
         time.sleep(t)
 
 try:
-    chase(0.1)
+    chase(0.6)
     #flash()
 except KeyboardInterrupt:
     for unit in units:
