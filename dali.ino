@@ -21,11 +21,11 @@ void setup() {
   digitalWrite(DALI_TX, LOW);
   
   // initialize serial
-  Serial.begin(115200);
+  Serial.begin(57600);
   
   // and wait for it to become available
   while (!Serial) ;
-  Serial.println("Ready");
+  Serial.println("DALI Interface Ready");
 
 #if PROGRAM
   sendCommand(0xFF, 32); // Broadcast, reset
@@ -48,12 +48,11 @@ void loop() {
       inputString[i] = read_serial_byte();
     }
     
-    Serial.print("Message length ");
-    Serial.println(msg_length);
-    
     for (i=0; i<msg_length; i+=2) {
       sendCommand(inputString[i], inputString[i+1]);
     }
+    
+    Serial.println("OK");
   }
 }
 
