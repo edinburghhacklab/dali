@@ -10,15 +10,14 @@ ser = serial.Serial(device, baudrate=115200, timeout=1)
 
 def msg(data):
     # packet starts with the number of message bytes
-    buf = chr(len(data))
-    
+    buf = [len(data)]
+
     # then the message
-    for d in data:
-        buf += chr(d)
-        
+    buf.extend(data)
+
     # add a null in case we get out of sync
     # (a null on its own will be interpreted as a zero-length message)
-    buf += chr(0)
+    buf.append(0)
 
     # send the data over serial
     ser.write(buf)
